@@ -6,6 +6,7 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.styles import colors
 from openpyxl.styles import Font, Color
+import re
 
 font = Font(name='ING Me', size=12, bold=True, italic=False, vertAlign=None, underline='none', strike=False, color='00FF6600')
 
@@ -141,6 +142,23 @@ for jira in temp:
          else :
             application = application + ', ' + app.upper()
       
+   # Try to find if there is an incident number
+   # I2208-00758 / INC1058985
+   topdesk_incident_array = re.findall(r"I\d{4}\-\d{5}",comment)
+   servicenow_incident_array = re.findall(r"INC\d{7}",comment)
+
+   if (len(topdesk_incident_array) > 0) :
+      incident_ref = topdesk_incident_array[0]
+      if (len(servicenow_incident_array) > 0) :
+         incident_ref = incident_ref + ', ' + servicenow_incident_array[0]
+   elif (len(servicenow_incident_array) > 0) :
+      incident_ref = servicenow_incident_array[0]
+   else :
+      incident_ref = 'UNKNOWN'
+
+   # //*[@id="issue_actions_container"]
+
+
 
    # Split elements 
    # https://www.w3schools.com/python/ref_string_split.asp
