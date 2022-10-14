@@ -2,6 +2,13 @@ from Tools import tools_v000 as tools
 from Jira import jira as j
 import os
 from os.path import dirname
+from openpyxl import Workbook
+from openpyxl import load_workbook
+from openpyxl.styles import colors
+from openpyxl.styles import Font, Color
+
+font = Font(name='ING Me', size=12, bold=True, italic=False, vertAlign=None, underline='none', strike=False, color='00FF6600')
+
 
 
 # -10 for the name of this project Run_report
@@ -26,10 +33,6 @@ for row in rows:
 
 tools.closeBrowserChrome()
 
-
-# importing the module
-from openpyxl import Workbook
-
 # create a workbook as .xlsx file
 def create_workbook(path):
    workbook = Workbook()
@@ -37,8 +40,6 @@ def create_workbook(path):
 if __name__ == "__main__": 
    create_workbook("file.xlsx") 
 print("File Created Successfully")
-
-from openpyxl import load_workbook 
 
 wb = load_workbook('file.xlsx') 
 # Sheet is the SheetName where the data has to be entered 
@@ -56,11 +57,21 @@ sheet.cell(row=3, column=7).value = 'APP'
 sheet.cell(row=3, column=8).value = 'CINS DOMAINE'
 sheet.cell(row=3, column=9).value = 'DATA TYPE'
 sheet.cell(row=3, column=10).value = 'COMMENT'
+sheet.cell(row=3, column=11).value = 'ID'
 
-
-
-
-
+# Place font
+sheet['A1'].font = font
+sheet.cell(row=3, column=1).font = font
+sheet.cell(row=3, column=2).font = font
+sheet.cell(row=3, column=3).font = font
+sheet.cell(row=3, column=4).font = font
+sheet.cell(row=3, column=5).font = font
+sheet.cell(row=3, column=6).font = font
+sheet.cell(row=3, column=7).font = font
+sheet.cell(row=3, column=8).font = font
+sheet.cell(row=3, column=9).font = font
+sheet.cell(row=3, column=10).font = font
+sheet.cell(row=3, column=11).font = font
 
 i = 0
 for jira in temp:
@@ -133,25 +144,28 @@ for jira in temp:
    print('Type = ' + type)
    print('Comment = ' + comment)
    
-   
+   # Sprint
    sheet.cell(row=3+i, column=1).value = sprint
+   # Assignee
    sheet.cell(row=3+i, column=2).value = assignee 
+   # Type = RUN
    sheet.cell(row=3+i, column=3).value = type 
+   # INCIDENT REF
    sheet.cell(row=3+i, column=4).value = '' 
+   # JIRA REF
    sheet.cell(row=3+i, column=5).value = jira
+   # DIRECT IMPACT BROKER
    sheet.cell(row=3+i, column=6).value = '' 
+   # APP
    sheet.cell(row=3+i, column=7).value = ''
+   # CINS DOMAIN
    sheet.cell(row=3+i, column=8).value = ''
+   # DATA TYPE
    sheet.cell(row=3+i, column=9).value = ''
+   # COMMENT
    sheet.cell(row=3+i, column=10).value = comment
-   
-   
-   
-   
-
-   
-   
-   
+   # ID
+   sheet.cell(row=3+i, column=11).value = i   
    
    tools.closeBrowserChrome()
    
