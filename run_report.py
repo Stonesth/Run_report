@@ -15,8 +15,9 @@ font = Font(name='ING Me', size=12, bold=True, italic=False, vertAlign=None, und
 save_path = os.path.dirname(os.path.abspath("__file__"))
 propertiesFolder_path = save_path + "/"+ "Properties"
 
-# Example of used
+# JIRA to treat
 j.jira = tools.readProperty(propertiesFolder_path, 'Run_report', 'jira=')
+list_of_tools = tools.readProperty(propertiesFolder_path, 'Run_report', 'list_of_tools=')
 
 tools.openBrowserChrome()
 
@@ -130,6 +131,16 @@ for jira in temp:
          print("Error")
          comment = ''
          pass
+   
+   # Try to find the APP related to this JIRA ticket
+   array_list = list_of_tools.split(", ")
+   for app in array_list :
+      if (comment.upper().find(app.upper()) > -1) :
+         if (application == '') :
+            application = app.upper()
+         else :
+            application = application + ', ' + app.upper()
+      
 
    # Split elements 
    # https://www.w3schools.com/python/ref_string_split.asp
@@ -138,34 +149,28 @@ for jira in temp:
    # https://appdividend.com/2022/06/23/how-to-get-last-element-of-a-list-in-python/#:~:text=To%20get%20the%20last%20element,to%20get%20the%20last%20element.
    print(x[-1])
    
-       
-   print('Sprint = ' + sprint)
-   print('Assignee = ' + assignee)
-   print('Type = ' + type)
-   print('Comment = ' + comment)
-   
    # Sprint
    sheet.cell(row=3+i, column=1).value = sprint
    # Assignee
-   sheet.cell(row=3+i, column=2).value = assignee 
+   sheet.cell(row=3+i, column=2).value = assignee
    # Type = RUN
-   sheet.cell(row=3+i, column=3).value = type 
+   sheet.cell(row=3+i, column=3).value = type
    # INCIDENT REF
-   sheet.cell(row=3+i, column=4).value = '' 
+   sheet.cell(row=3+i, column=4).value = incident_ref
    # JIRA REF
    sheet.cell(row=3+i, column=5).value = jira
    # DIRECT IMPACT BROKER
-   sheet.cell(row=3+i, column=6).value = '' 
+   sheet.cell(row=3+i, column=6).value = direct_impact_broker
    # APP
-   sheet.cell(row=3+i, column=7).value = ''
+   sheet.cell(row=3+i, column=7).value = application
    # CINS DOMAIN
-   sheet.cell(row=3+i, column=8).value = ''
+   sheet.cell(row=3+i, column=8).value = cins_domain
    # DATA TYPE
-   sheet.cell(row=3+i, column=9).value = ''
+   sheet.cell(row=3+i, column=9).value = data_type
    # COMMENT
    sheet.cell(row=3+i, column=10).value = comment
    # ID
-   sheet.cell(row=3+i, column=11).value = i   
+   sheet.cell(row=3+i, column=11).value = i
    
    tools.closeBrowserChrome()
    
